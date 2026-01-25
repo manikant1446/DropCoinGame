@@ -64,7 +64,7 @@ npm start
 
 4. **Open the game**
 ```
-[http://localhost:8080](https://dropcoin-psi.vercel.app/)
+https://dropcoin-psi.vercel.app/
 ```
 
 ## 📁 Project Structure
@@ -93,7 +93,7 @@ coindrop/
 ## 🎮 How to Play
 
 ### Demo Mode (No Wallet)
-1. Open http://localhost:8080
+1. Open https://dropcoin-psi.vercel.app/
 2. Adjust angle and force sliders
 3. Click "Drop Coin"
 4. Watch the physics simulation!
