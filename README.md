@@ -1,5 +1,9 @@
 # 🎮 CoinDrop - Web3 Physics Game
 
+<p align="center">
+  <img src="logo-banner.svg" alt="CoinDrop Logo" width="100%">
+</p>
+
 A skill-based physics game built on the Monad blockchain featuring realistic water mechanics and glassmorphism UI.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
