@@ -36,8 +36,8 @@ Drop a coin into a container filled with water. The goal is to land the coin in 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/coindrop.git
-cd coindrop
+git clone https://github.com/manikant1446/DropCoinGame.git
+cd DropCoinGame
 ```
 
 2. **Start the frontend**
