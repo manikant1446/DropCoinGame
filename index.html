@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoinDrop - Skill-Based Web3 Physics Game</title>
+    <meta name="description"
+        content="Test your precision in CoinDrop - a physics-based Web3 game on Monad blockchain. Drop the coin, win rewards!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Effects -->
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">💰</div>
+                    <h1 class="logo-text">CoinDrop</h1>
+                </div>
+
+                <div class="header-right">
+                    <div class="network-status" id="networkStatus">
+                        <div class="status-dot"></div>
+                        <span>Not Connected</span>
+                    </div>
+                    <button class="btn btn-primary" id="connectWallet">
+                        <span class="btn-icon">🔗</span>
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main class="main-content">
+        <div class="container">
+            <div class="game-layout">
+                <!-- Left Panel - Controls -->
+                <aside class="control-panel glass-card">
+                    <h2 class="panel-title">Game Controls</h2>
+
+                    <!-- Player Stats -->
+                    <div class="stats-section" id="playerStats">
+                        <div class="stat-item">
+                            <span class="stat-label">Games Played</span>
+                            <span class="stat-value" id="totalGames">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Wins</span>
+                            <span class="stat-value" id="totalWins">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Win Rate</span>
+                            <span class="stat-value" id="winRate">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Drop Angle Control -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Drop Angle</span>
+                            <span class="control-value" id="angleValue">180°</span>
+                        </label>
+                        <input type="range" class="slider" id="angleSlider" min="0" max="360" value="180">
+                        <div class="slider-markers">
+                            <span>0°</span>
+                            <span>90°</span>
+                            <span>180°</span>
+                            <span>270°</span>
+                            <span>360°</span>
+                        </div>
+                    </div>
+
+                    <!-- Drop Force Control -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Drop Force</span>
+                            <span class="control-value" id="forceValue">0.5x</span>
+                        </label>
+                        <input type="range" class="slider" id="forceSlider" min="30" max="150" value="50" step="5">
+                        <div class="slider-markers">
+                            <span>Soft</span>
+                            <span>Medium</span>
+                            <span>Hard</span>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Bet Amount -->
+                    <div class="bet-section">
+                        <div class="bet-info">
+                            <span class="bet-label">Bet Amount</span>
+                            <span class="bet-amount" id="betAmount">0.01 MON</span>
+                        </div>
+                        <div class="potential-win">
+                            <span>Potential Win:</span>
+                            <span class="win-amount">0.018 MON</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-large btn-success" id="dropButton">
+                            <span class="btn-icon">🎯</span>
+                            Drop Coin
+                        </button>
+                        <button class="btn btn-secondary" id="resetButton">
+                            <span class="btn-icon">🔄</span>
+                            Reset
+                        </button>
+                    </div>
+
+                    <!-- Game Instructions -->
+                    <div class="instructions">
+                        <h3 class="instructions-title">How to Play</h3>
+                        <ol class="instructions-list">
+                            <li>Connect your wallet to Monad network</li>
+                            <li>Choose your drop angle (0-360°)</li>
+                            <li>Adjust drop force (optional)</li>
+                            <li>Click "Drop Coin" to play</li>
+                            <li>Land in the small glass to win!</li>
+                        </ol>
+                    </div>
+                </aside>
+
+                <!-- Center - Game Canvas -->
+                <section class="game-section">
+                    <div class="game-container glass-card">
+                        <div class="game-header">
+                            <h2 class="game-title">Drop Zone</h2>
+                            <div class="game-status" id="gameStatus">
+                                <div class="status-indicator"></div>
+                                <span id="statusText">Ready to Play</span>
+                            </div>
+                        </div>
+
+                        <div class="canvas-wrapper">
+                            <canvas id="gameCanvas"></canvas>
+                            <div class="canvas-overlay" id="canvasOverlay">
+                                <div class="angle-indicator" id="angleIndicator"></div>
+                            </div>
+                        </div>
+
+                        <!-- Result Display -->
+                        <div class="result-display" id="resultDisplay">
+                            <div class="result-content">
+                                <div class="result-icon" id="resultIcon">🎉</div>
+                                <h3 class="result-title" id="resultTitle">You Win!</h3>
+                                <p class="result-message" id="resultMessage">Perfect drop! The coin landed in the
+                                    target.</p>
+                                <div class="result-reward" id="resultReward">+0.018 MON</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Info Cards -->
+                    <div class="info-cards">
+                        <div class="info-card glass-card">
+                            <div class="info-icon">🎯</div>
+                            <div class="info-content">
+                                <h4>Precision Matters</h4>
+                                <p>Aim carefully - water deflects the coin!</p>
+                            </div>
+                        </div>
+                        <div class="info-card glass-card">
+                            <div class="info-icon">💧</div>
+                            <div class="info-content">
+                                <h4>Realistic Physics</h4>
+                                <p>Water resistance affects trajectory</p>
+                            </div>
+                        </div>
+                        <div class="info-card glass-card">
+                            <div class="info-icon">⛓️</div>
+                            <div class="info-content">
+                                <h4>On-Chain Verified</h4>
+                                <p>All results recorded on Monad</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Panel - Leaderboard -->
+                <aside class="leaderboard-panel glass-card">
+                    <h2 class="panel-title">Recent Games</h2>
+                    <div class="leaderboard-list" id="recentGames">
+                        <div class="leaderboard-item">
+                            <div class="player-info">
+                                <div class="player-avatar">🏆</div>
+                                <div class="player-details">
+                                    <span class="player-name">0x1234...5678</span>
+                                    <span class="player-result win">Won</span>
+                                </div>
+                            </div>
+                            <div class="game-reward">+0.018 MON</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="player-info">
+                                <div class="player-avatar">💰</div>
+                                <div class="player-details">
+                                    <span class="player-name">0xabcd...efgh</span>
+                                    <span class="player-result loss">Lost</span>
+                                </div>
+                            </div>
+                            <div class="game-reward">-0.01 MON</div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Built on <strong>Monad Blockchain</strong> | Powered by Physics & Precision</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Robust library loader with fallbacks
+        (function () {
+            let ethersLoaded = false;
+            let matterLoaded = false;
+            let checkInterval;
+            let attempts = 0;
+            const maxAttempts = 20; // 10 seconds total
+
+            function checkLibraries() {
+                attempts++;
+
+                if (typeof ethers !== 'undefined') {
+                    ethersLoaded = true;
+                }
+
+                if (typeof Matter !== 'undefined') {
+                    matterLoaded = true;
+                }
+
+                if (ethersLoaded && matterLoaded) {
+                    clearInterval(checkInterval);
+                    console.log('✓ All libraries loaded successfully');
+                    // Libraries are ready, modules will load
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    console.error('Failed to load libraries after', attempts, 'attempts');
+                    console.error('ethers:', ethersLoaded, 'Matter:', matterLoaded);
+                    alert('Failed to load required libraries.\n\nPlease:\n1. Check your internet connection\n2. Disable ad blockers\n3. Refresh the page\n\nIf the problem persists, the CDN might be down.');
+                }
+            }
+
+            // Start checking after a short delay
+            setTimeout(function () {
+                checkInterval = setInterval(checkLibraries, 500);
+            }, 100);
+        })();
+    </script>
+
+    <!-- Load ethers.js from CDN (using unpkg as it's more reliable) -->
+    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js" crossorigin="anonymous"
+        onload="console.log('✓ ethers.js loaded from unpkg')"
+        onerror="console.error('Failed to load ethers.js from unpkg CDN')"></script>
+
+    <!-- Load Matter.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js" crossorigin="anonymous"
+        integrity="sha512-0z8URjGET6GWnS1xcgiLBZBzoaS8BNlKayfZyQNKz4IRp+s7CKXx0yz7Eco2+TcwoeMBa5KMwmTX7Kus7Fa5Uw=="
+        onerror="console.error('Failed to load Matter.js from CDN')"></script>
+
+    <!-- Game modules - these will wait for libraries -->
+    <script type="module" src="config.js"></script>
+    <script type="module" src="contract-abi.js"></script>
+    <script type="module" src="web3.js"></script>
+    <script type="module" src="particles.js"></script>
+    <script type="module" src="physics.js"></script>
+    <script type="module" src="game.js"></script>
+</body>
+
+</html>
