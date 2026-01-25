@@ -64,7 +64,7 @@ npm start
 
 4. **Open the game**
 ```
-http://localhost:8080
+[http://localhost:8080](https://dropcoin-psi.vercel.app/)
 ```
 
 ## 📁 Project Structure
